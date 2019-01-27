@@ -1,0 +1,38 @@
+const btns = document.querySelectorAll('button');
+const form = document.querySelector('form');
+const formAct = document.querySelector('form span');
+const input = document.querySelector('input');
+const error = document.querySelector('.error');
+var activity = "cycling";
+btns.forEach(btn=>{
+    btn.addEventListener('click',e=>{
+        //data-activity   dataset.xxx
+        activity = e.target.dataset.activity;
+        btns.forEach(btn=>btn.classList.remove('active'));
+        e.target.classList.add('active');
+
+        input.setAttribute('id',activity);
+        formAct.textContent=activity;
+
+        //call update funtion
+        update(data);
+    })
+})
+
+form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const distance = parseInt(input.value);
+    if(distance){
+        db.collection('activities').add({
+            distance,
+            activity,
+            date:new Date().toString()
+        }).then(()=>{
+            console.log("done");
+            error.textContent = '';
+            input.value = '';
+        })
+    }else{
+        error.textContent = "Please enter a valid input!"
+    }
+})
